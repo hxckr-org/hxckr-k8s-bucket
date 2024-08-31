@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-handler
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webhook-handler
+  template:
+    metadata:
+      labels:
+        app: webhook-handler
+    spec:
+      containers:
+      - name: webhook-handler
+        image: mock-webhook-handler:latest  # Replace with actual image when available
+        ports:
+        - containerPort: 3003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-handler
+spec:
+  selector:
+    app: webhook-handler
+  ports:
+  - port: 3003

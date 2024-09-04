@@ -16,8 +16,19 @@ spec:
       containers:
       - name: server
         image: extheoisah/hxckr-core:main
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: db-url
+              optional: true
+        - name: DATABASE_URL
+          value: "postgresql://${user}:${password}@host.docker.internal:5432/hxckr"
+        # TODO: Set actual database URLs for both production (in db-secrets) and local development
 ---
 apiVersion: v1
 kind: Service

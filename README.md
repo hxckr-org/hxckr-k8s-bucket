@@ -6,11 +6,11 @@ This repository contains the Kubernetes configuration files for the hxckr projec
 
 1. **Server** (`server.yaml`): Main application server handling CRUD operations and business logic.
 2. **Frontend** (`frontend.yaml`): User interface for the application. Exposed externally. Communicates internally with the server.
-3. **Git Auth Service** (`git-auth-service.yaml`): Handles authentication for Git operations.
-4. **Softserve** (`softserve.yaml`): Manages in-progress code challenges and triggers webhooks. Exposed externally.
-5. **Webhook Handler** (`webhook-handler.yaml`): Listens for webhook events and publishes tasks to job queues.
-6. **Job Queue** (`job-queue.yaml`): RabbitMQ instance for managing tasks.
-7. **Test Runners** (`test-runners.yaml`): JavaScript and Python test runners for executing code challenges.
+3. **Softserve** (`softserve.yaml`): Manages in-progress code challenges and triggers webhooks. Exposed externally.
+4. **Webhook Handler** (`webhook-handler.yaml`): Listens for webhook events and publishes tasks to job queues.
+5. **Job Queue** (`job-queue.yaml`): RabbitMQ instance for managing tasks.
+6. **Test Runners** (`test-runners.yaml`): JavaScript and Python test runners for executing code challenges.
+7. **Git Service** (`git-service.yaml`): Interacts with Softserve git server, providing HTTP endpoints for git-related operations.
 
 ## Prerequisites
 
@@ -31,7 +31,7 @@ Follow these steps to deploy the hxckr application:
 
 2. Apply the configurations:
    ```
-   kubectl apply -f server.yaml -f frontend.yaml -f git-auth-service.yaml -f softserve.yaml -f webhook-handler.yaml -f job-queue.yaml -f test-runners.yaml -n hxckr
+   kubectl apply -f server.yaml -f frontend.yaml -f softserve.yaml -f webhook-handler.yaml -f job-queue.yaml -f test-runners.yaml -f git-service.yaml -n hxckr
    ```
    Or, if all files are in the current directory:
    ```

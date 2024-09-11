@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: git-service
+  template:
+    metadata:
+      labels:
+        app: git-service
+    spec:
+      containers:
+      - name: git-service
+        image: extheoisah/hxckr-git-service:main
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080  # Assuming the service runs on port 8080, adjust if needed
+        env:
+        - name: SOFTSERVE_HOST
+          value: "softserve"  # This uses the internal DNS name of the Softserve service
+        - name: SOFTSERVE_PORT
+          value: "3002"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: git-service
+spec:
+  selector:
+    app: git-service
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP  # Internal service, not exposed externally

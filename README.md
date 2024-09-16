@@ -5,12 +5,11 @@ This repository contains the Kubernetes configuration files for the hxckr projec
 ## Components
 
 1. **Server** (`server.yaml`): Main application server handling CRUD operations and business logic.
-2. **Frontend** (`frontend.yaml`): User interface for the application. Exposed externally. Communicates internally with the server.
-3. **Softserve** (`softserve.yaml`): Manages in-progress code challenges and triggers webhooks. Exposed externally.
-4. **Webhook Handler** (`webhook-handler.yaml`): Listens for webhook events and publishes tasks to job queues.
-5. **Job Queue** (`job-queue.yaml`): RabbitMQ instance for managing tasks.
-6. **Test Runners** (`test-runners.yaml`): JavaScript and Python test runners for executing code challenges.
-7. **Git Service** (`git-service.yaml`): Interacts with Softserve git server, providing HTTP endpoints for git-related operations.
+2. **Softserve** (`softserve.yaml`): Manages in-progress code challenges and triggers webhooks. Exposed externally.
+3. **Webhook Handler** (`webhook-handler.yaml`): Listens for webhook events and publishes tasks to job queues.
+4. **Job Queue** (`job-queue.yaml`): RabbitMQ instance for managing tasks.
+5. **Test Runners** (`test-runners.yaml`): JavaScript and Python test runners for executing code challenges.
+6. **Git Service** (`git-service.yaml`): Interacts with Softserve git server, providing HTTP endpoints for git-related operations.
 
 ## Prerequisites
 
@@ -31,7 +30,7 @@ Follow these steps to deploy the hxckr application:
 
 2. Apply the configurations:
    ```
-   kubectl apply -f server.yaml -f frontend.yaml -f softserve.yaml -f webhook-handler.yaml -f job-queue.yaml -f test-runners.yaml -f git-service.yaml -n hxckr
+   kubectl apply -f server.yaml -f softserve.yaml -f webhook-handler.yaml -f job-queue.yaml -f test-runners.yaml -f git-service.yaml -n hxckr
    ```
    Or, if all files are in the current directory:
    ```
@@ -45,20 +44,20 @@ Follow these steps to deploy the hxckr application:
 
 4. Wait for all pods to be in the "Running" state.
 
-5. To access the frontend and softserve services externally, get their LoadBalancer IPs:
+5. To access the softserve service externally, get its LoadBalancer IP:
    ```
-   kubectl get service frontend softserve -n hxckr
+   kubectl get service softserve -n hxckr
    ```
 
-6. Use the EXTERNAL-IP of the frontend service to access the application in your web browser.
+6. Use the EXTERNAL-IP of the softserve service to access it externally.
 
 ## Internal Communication
 
-The frontend communicates with the server using the internal Kubernetes DNS. The server's URL is passed to the frontend as an environment variable `SERVER_URL`.
+The frontend hosted on Vercel will communicate with the server using the external IP or domain name of the server service. Make sure to configure the appropriate environment variables in your Vercel deployment to point to the correct server URL.
 
 ## Security Note
 
-Only the frontend and softserve services are exposed externally. All other services, including the server, are internal to the cluster for security reasons. Ensure proper network policies are in place to restrict communication between services as needed.
+Only the softserve service is exposed externally. All other services, including the server, are internal to the cluster for security reasons. Ensure proper network policies are in place to restrict communication between services as needed.
 
 ## Cleaning Up
 

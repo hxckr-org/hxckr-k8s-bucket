@@ -5,12 +5,11 @@ This repository contains the Kubernetes configuration files for the hxckr projec
 ## Components
 
 1. **Server** (`server.yaml`): Main application server handling CRUD operations and business logic.
-2. **Git Auth Service** (`git-auth-service.yaml`): Handles authentication for Git operations.
-3. **Softserve** (`softserve.yaml`): Manages in-progress code challenges and triggers webhooks. Exposed externally.
-4. **Webhook Handler** (`webhook-handler.yaml`): Listens for webhook events and publishes tasks to job queues.
-5. **Job Queue** (`job-queue.yaml`): RabbitMQ instance for managing tasks.
-6. **Test Runners** (`test-runners.yaml`): JavaScript and Python test runners for executing code challenges.
-7. **Git Service** (`git-service.yaml`): Interacts with Softserve git server, providing HTTP endpoints for git-related operations.
+2. **Softserve** (`softserve.yaml`): Manages in-progress code challenges and triggers webhooks. Exposed externally.
+3. **Webhook Handler** (`webhook-handler.yaml`): Listens for webhook events and publishes tasks to job queues.
+4. **Job Queue** (`job-queue.yaml`): RabbitMQ instance for managing tasks.
+5. **Test Runners** (`test-runners.yaml`): JavaScript and Python test runners for executing code challenges.
+6. **Git Service** (`git-service.yaml`): Interacts with Softserve git server, providing HTTP endpoints for git-related operations.
 
 ## Prerequisites
 

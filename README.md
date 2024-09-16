@@ -30,7 +30,7 @@ Follow these steps to deploy the hxckr application:
 
 2. Apply the configurations:
    ```
-   kubectl apply -f server.yaml -f git-auth-service.yaml -f softserve.yaml -f webhook-handler.yaml -f job-queue.yaml -f test-runners.yaml -f git-service.yaml -n hxckr
+   kubectl apply -f server.yaml -f softserve.yaml -f webhook-handler.yaml -f job-queue.yaml -f test-runners.yaml -f git-service.yaml -n hxckr
    ```
    Or, if all files are in the current directory:
    ```

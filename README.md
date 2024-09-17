@@ -65,3 +65,66 @@ To remove all deployed resources:
 ```
 kubectl delete -f . -n hxckr
 ```
+
+## Deployment Instructions
+
+### Development Deployment
+
+To deploy the application in the development environment:
+
+1. Apply the Kubernetes configurations:
+   ```
+   kubectl apply -k k8s/overlays/development
+   ```
+
+2. Verify the deployment:
+   ```
+   kubectl get pods -n hxckr-dev
+   ```
+
+### Production Deployment
+
+Before deploying to production, ensure that the database secret is created:
+
+1. Obtain the DATABASE_URL from your Railway dashboard.
+
+2. Create the secret in your Kubernetes cluster:
+   ```
+   kubectl create secret generic db-secrets \
+     --from-literal=db-url='your-actual-railway-database-url' \
+     --namespace hxckr-prod
+   ```
+   Replace 'your-actual-railway-database-url' with the actual URL from Railway.
+
+3. Apply the Kubernetes configurations:
+   ```
+   kubectl apply -k k8s/overlays/production
+   ```
+
+4. Verify the deployment:
+   ```
+   kubectl get pods -n hxckr-prod
+   ```
+
+Note: Ensure that the db-secrets secret is created before applying the Kubernetes configurations in production.
+
+### Production Deployment
+
+Note: The db-secrets secret is created manually and persists across deployments. You only need to create it once unless you need to update the database URL. To update the secret:
+
+1. Delete the existing secret:
+   ```
+   kubectl delete secret db-secrets -n hxckr-prod
+   ```
+
+2. Recreate the secret with the new URL:
+   ```
+   kubectl create secret generic db-secrets \
+     --from-literal=db-url='your-new-railway-database-url' \
+     --namespace hxckr-prod
+   ```
+
+3. Restart the deployments to pick up the new secret:
+   ```
+   kubectl rollout restart deployment server -n hxckr-prod
+   ```

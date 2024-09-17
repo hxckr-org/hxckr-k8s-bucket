@@ -10,4 +10,4 @@ spec:
         image: extheoisah/hxckr-core:dev
         env:
         - name: DATABASE_URL
-          value: "postgresql://${user}:${password}@host.docker.internal:5432/hxckr_dev"
+          value: "postgresql://hxckr_user:dev-password@postgres.hxckr-dev.svc.cluster.local:5432/hxckr_dev"

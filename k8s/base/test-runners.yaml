@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: javascript-test-runner
-        image: mock-javascript-test-runner:latest  # Replace with actual image when available
+        image: mock-javascript-test-runner:latest  # TODO: Replace with actual image when available
         ports:
         - containerPort: 3004
 ---
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: python-test-runner
-        image: mock-python-test-runner:latest  # Replace with actual image when available
+        image: mock-python-test-runner:latest  # TODO: Replace with actual image when available
         ports:
         - containerPort: 3005
 ---

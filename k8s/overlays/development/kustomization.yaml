@@ -3,6 +3,7 @@ kind: Kustomization
 bases:
   - ../../base
 namespace: hxckr-dev
+resources:
+  - postgres.yaml
 patchesStrategicMerge:
   - server-patch.yaml
-  - softserve-patch.yaml

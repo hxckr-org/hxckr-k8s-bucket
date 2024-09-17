@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: softserve
-        image: mock-softserve:latest  # Replace with actual image when available
+        image: mock-softserve:latest  # TODO:Replace with actual image when available
         ports:
         - containerPort: 3002
 ---

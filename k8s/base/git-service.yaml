@@ -18,7 +18,7 @@ spec:
         image: extheoisah/hxckr-git-service:main
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080  # Assuming the service runs on port 8080, adjust if needed
+        - containerPort: 8080
         env:
         - name: SOFTSERVE_HOST
           value: "softserve"  # This uses the internal DNS name of the Softserve service

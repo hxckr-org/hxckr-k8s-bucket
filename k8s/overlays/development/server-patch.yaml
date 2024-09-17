@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  template:
+    spec:
+      containers:
+      - name: server
+        image: extheoisah/hxckr-core:dev
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://${user}:${password}@host.docker.internal:5432/hxckr_dev"

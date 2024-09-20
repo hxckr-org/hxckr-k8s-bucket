@@ -3,6 +3,12 @@ kind: Kustomization
 resources:
   - ../../base
   - namespace.yaml
+configMapGenerator:
+  - name: rabbitmq-definitions
+    files:
+    - definitions.json
 namespace: hxckr-prod
 patches:
   - path: server-patch.yaml
+patchesStrategicMerge:
+  - job-queue.yaml

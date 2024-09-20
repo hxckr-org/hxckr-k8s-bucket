@@ -50,17 +50,28 @@ To deploy the application in the development environment:
 
 ### Production Deployment
 
-Before deploying to production, ensure that the database secret is created:
+Before deploying to production, ensure that the necessary secrets are created:
 
-1. Obtain the DATABASE_URL from your Railway dashboard.
+1. Database Secret:
+   a. Obtain the DATABASE_URL from your Railway dashboard.
+   b. Create the secret in your Kubernetes cluster:
+      ```
+      kubectl create secret generic db-secrets \
+        --from-literal=db-url='your-actual-railway-database-url' \
+        --namespace hxckr-prod
+      ```
+      Replace 'your-actual-railway-database-url' with the actual URL from Railway.
 
-2. Create the secret in your Kubernetes cluster:
-   ```
-   kubectl create secret generic db-secrets \
-     --from-literal=db-url='your-actual-railway-database-url' \
-     --namespace hxckr-prod
-   ```
-   Replace 'your-actual-railway-database-url' with the actual URL from Railway.
+2. RabbitMQ Secret:
+   a. Choose a secure username and password for RabbitMQ.
+   b. Create the secret in your Kubernetes cluster:
+      ```
+      kubectl create secret generic rabbitmq-secret \
+        --from-literal=username='your-rabbitmq-username' \
+        --from-literal=password='your-rabbitmq-password' \
+        --namespace hxckr-prod
+      ```
+      Replace 'your-rabbitmq-username' and 'your-rabbitmq-password' with your chosen credentials.
 
 3. Apply the Kubernetes configurations:
    ```
@@ -81,7 +92,7 @@ Before deploying to production, ensure that the database secret is created:
 
 7. Use the EXTERNAL-IP of the softserve service to access it externally.
 
-Note: Ensure that the db-secrets secret is created before applying the Kubernetes configurations in production.
+Note: Ensure that both the db-secrets and rabbitmq-secret secrets are created before applying the Kubernetes configurations in production.
 
 ### Updating Production Database URL
 
@@ -103,6 +114,24 @@ The db-secrets secret is created manually and persists across deployments. You o
    ```
    kubectl rollout restart deployment server -n hxckr-prod
    ```
+
+### Updating Production Secrets
+
+The db-secrets and rabbitmq-secret are created manually and persist across deployments. You only need to create them once unless you need to update the values. To update a secret:
+
+1. Delete the existing secret:
+   ```
+   kubectl delete secret <secret-name> -n hxckr-prod
+   ```
+   Replace <secret-name> with either db-secrets or rabbitmq-secret.
+
+2. Recreate the secret with the new values using the appropriate command from steps 1 or 2 in the "Production Deployment" section.
+
+3. Restart the affected deployments to pick up the new secret:
+   ```
+   kubectl rollout restart deployment <deployment-name> -n hxckr-prod
+   ```
+   Replace <deployment-name> with the name of the deployment using the updated secret (e.g., server, job-queue).
 
 ## Cleaning Up
 

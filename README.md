@@ -18,10 +18,31 @@ Before running the configuration, ensure you have the following:
 1. A Kubernetes cluster set up and running
 2. `kubectl` installed and configured to communicate with your cluster
 3. Docker images for each component (or mock images for testing)
+4. `make` installed on your system
 
 ## Deployment Instructions
 
 The hxckr application can be deployed in two environments: development and production. Each environment has its own configuration managed through Kustomize overlays.
+
+### Using the Makefile
+
+We provide a Makefile to simplify common operations. Here are the available commands:
+
+- `make dev-deploy`: Deploy the application in the development environment
+- `make dev-verify`: Verify the deployment in the development environment
+- `make dev-softserve`: Get the external IP of the softserve service in development
+- `make dev-clean`: Remove all deployed resources in the development environment
+
+To start individual services:
+
+- `make dev-start-server`: Start the server service
+- `make dev-start-softserve`: Start the softserve service
+- `make dev-start-webhook-handler`: Start the webhook handler service
+- `make dev-start-job-queue`: Start the job queue service
+- `make dev-start-test-runners`: Start the test runners service
+- `make dev-start-git-service`: Start the git service
+
+For a full list of available commands, run `make help`.
 
 ### Development Deployment
 
@@ -29,21 +50,21 @@ To deploy the application in the development environment:
 
 1. Ensure you're in the root directory of the project.
 
-2. Apply the Kubernetes configurations:
+2. Run the deployment command:
    ```
-   kubectl apply -k k8s/overlays/development
+   make dev-deploy
    ```
 
 3. Verify the deployment:
    ```
-   kubectl get pods -n hxckr-dev
+   make dev-verify
    ```
 
 4. Wait for all pods to be in the "Running" state.
 
 5. To access the softserve service externally, get its LoadBalancer IP:
    ```
-   kubectl get service softserve -n hxckr-dev
+   make dev-softserve
    ```
 
 6. Use the EXTERNAL-IP of the softserve service to access it externally.

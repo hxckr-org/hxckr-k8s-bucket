@@ -18,10 +18,31 @@ Before running the configuration, ensure you have the following:
 1. A Kubernetes cluster set up and running
 2. `kubectl` installed and configured to communicate with your cluster
 3. Docker images for each component (or mock images for testing)
+4. `make` installed on your system
 
 ## Deployment Instructions
 
 The hxckr application can be deployed in two environments: development and production. Each environment has its own configuration managed through Kustomize overlays.
+
+### Using the Makefile
+
+We provide a Makefile to simplify common operations. Here are the available commands:
+
+- `make dev-deploy`: Deploy the application in the development environment
+- `make dev-verify`: Verify the deployment in the development environment
+- `make dev-softserve`: Get the external IP of the softserve service in development
+- `make dev-clean`: Remove all deployed resources in the development environment
+
+To start individual services:
+
+- `make dev-start-server`: Start the server service
+- `make dev-start-softserve`: Start the softserve service
+- `make dev-start-webhook-handler`: Start the webhook handler service
+- `make dev-start-job-queue`: Start the job queue service
+- `make dev-start-test-runners`: Start the test runners service
+- `make dev-start-git-service`: Start the git service
+
+For a full list of available commands, run `make help`.
 
 ### Development Deployment
 
@@ -29,38 +50,49 @@ To deploy the application in the development environment:
 
 1. Ensure you're in the root directory of the project.
 
-2. Apply the Kubernetes configurations:
+2. Run the deployment command:
    ```
-   kubectl apply -k k8s/overlays/development
+   make dev-deploy
    ```
 
 3. Verify the deployment:
    ```
-   kubectl get pods -n hxckr-dev
+   make dev-verify
    ```
 
 4. Wait for all pods to be in the "Running" state.
 
 5. To access the softserve service externally, get its LoadBalancer IP:
    ```
-   kubectl get service softserve -n hxckr-dev
+   make dev-softserve
    ```
 
 6. Use the EXTERNAL-IP of the softserve service to access it externally.
 
 ### Production Deployment
 
-Before deploying to production, ensure that the database secret is created:
+Before deploying to production, ensure that the necessary secrets are created:
 
-1. Obtain the DATABASE_URL from your Railway dashboard.
+1. Database Secret:
+   a. Obtain the DATABASE_URL from your Railway dashboard.
+   b. Create the secret in your Kubernetes cluster:
+      ```
+      kubectl create secret generic db-secrets \
+        --from-literal=db-url='your-actual-railway-database-url' \
+        --namespace hxckr-prod
+      ```
+      Replace 'your-actual-railway-database-url' with the actual URL from Railway.
 
-2. Create the secret in your Kubernetes cluster:
-   ```
-   kubectl create secret generic db-secrets \
-     --from-literal=db-url='your-actual-railway-database-url' \
-     --namespace hxckr-prod
-   ```
-   Replace 'your-actual-railway-database-url' with the actual URL from Railway.
+2. RabbitMQ Secret:
+   a. Choose a secure username and password for RabbitMQ.
+   b. Create the secret in your Kubernetes cluster:
+      ```
+      kubectl create secret generic rabbitmq-secret \
+        --from-literal=username='your-rabbitmq-username' \
+        --from-literal=password='your-rabbitmq-password' \
+        --namespace hxckr-prod
+      ```
+      Replace 'your-rabbitmq-username' and 'your-rabbitmq-password' with your chosen credentials.
 
 3. Apply the Kubernetes configurations:
    ```
@@ -81,7 +113,7 @@ Before deploying to production, ensure that the database secret is created:
 
 7. Use the EXTERNAL-IP of the softserve service to access it externally.
 
-Note: Ensure that the db-secrets secret is created before applying the Kubernetes configurations in production.
+Note: Ensure that both the db-secrets and rabbitmq-secret secrets are created before applying the Kubernetes configurations in production.
 
 ### Updating Production Database URL
 
@@ -103,6 +135,24 @@ The db-secrets secret is created manually and persists across deployments. You o
    ```
    kubectl rollout restart deployment server -n hxckr-prod
    ```
+
+### Updating Production Secrets
+
+The db-secrets and rabbitmq-secret are created manually and persist across deployments. You only need to create them once unless you need to update the values. To update a secret:
+
+1. Delete the existing secret:
+   ```
+   kubectl delete secret <secret-name> -n hxckr-prod
+   ```
+   Replace <secret-name> with either db-secrets or rabbitmq-secret.
+
+2. Recreate the secret with the new values using the appropriate command from steps 1 or 2 in the "Production Deployment" section.
+
+3. Restart the affected deployments to pick up the new secret:
+   ```
+   kubectl rollout restart deployment <deployment-name> -n hxckr-prod
+   ```
+   Replace <deployment-name> with the name of the deployment using the updated secret (e.g., server, job-queue).
 
 ## Cleaning Up
 

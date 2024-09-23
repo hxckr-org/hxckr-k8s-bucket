@@ -7,6 +7,7 @@ resources:
 namespace: hxckr-dev
 patches:
   - path: server-patch.yaml
+  - path: softserve-patch.yaml
 configMapGenerator:
   - name: rabbitmq-definitions
     files:

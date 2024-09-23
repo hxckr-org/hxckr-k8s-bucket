@@ -10,5 +10,6 @@ configMapGenerator:
 namespace: hxckr-prod
 patches:
   - path: server-patch.yaml
+  - path: softserve-patch.yaml
 patchesStrategicMerge:
   - job-queue.yaml

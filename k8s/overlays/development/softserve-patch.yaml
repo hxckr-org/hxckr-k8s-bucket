@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: softserve
+spec:
+  template:
+    spec:
+      containers:
+      - name: softserve
+        env:
+        - name: SOFT_SERVE_DB_DATA_SOURCE
+          value: "postgresql://soft_serve_user:dev-password@postgres-soft-serve.hxckr-dev.svc.cluster.local:5432/soft_serve?sslmode=disable"
+        ports:
+        - containerPort: 23231
+        - containerPort: 23232
+        - containerPort: 23233
+        - containerPort: 9418

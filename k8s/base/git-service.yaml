@@ -13,6 +13,10 @@ spec:
       labels:
         app: git-service
     spec:
+      initContainers:
+      - name: wait-for-ssh-key-secret
+        image: bitnami/kubectl:latest
+        command: ['sh', '-c', 'until kubectl get secret ssh-key-secret; do echo "waiting for ssh-key-secret"; sleep 2; done']
       containers:
       - name: git-service
         image: extheoisah/hxckr-git-service:main
@@ -24,6 +28,11 @@ spec:
           value: "softserve"  # This uses the internal DNS name of the Softserve service
         - name: SOFTSERVE_PORT
           value: "3002"
+        - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
+          valueFrom:
+            secretKeyRef:
+              name: ssh-key-secret
+              key: id_rsa
 ---
 apiVersion: v1
 kind: Service

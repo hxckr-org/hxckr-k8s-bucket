@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: softserve
+spec:
+  template:
+    spec:
+      containers:
+      - name: softserve
+        env:
+        - name: SOFT_SERVE_DB_DATA_SOURCE
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: db-url
+        ports:
+        - containerPort: 23231
+        - containerPort: 23232
+        - containerPort: 23233
+        - containerPort: 9418

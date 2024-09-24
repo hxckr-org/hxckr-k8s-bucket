@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: generate-ssh-key
+spec:
+  template:
+    spec:
+      containers:
+      - name: ssh-key-generator
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            if ! kubectl get secret ssh-key-secret; then
+              apk add --no-cache openssh-client kubectl && \
+              ssh-keygen -t rsa -b 4096 -f /keys/soft-serve-admin-key -N "" -q && \
+              kubectl create secret generic ssh-key-secret \
+                --from-file=id_rsa=/keys/soft-serve-admin-key \
+                --from-file=id_rsa.pub=/keys/soft-serve-admin-key.pub \
+                --dry-run=client -o yaml | kubectl apply -f -
+            else
+              echo "Secret ssh-key-secret already exists. Skipping key generation."
+            fi
+        volumeMounts:
+        - name: ssh-keys
+          mountPath: /keys
+      restartPolicy: OnFailure
+      volumes:
+      - name: ssh-keys
+        emptyDir: {}

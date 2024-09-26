@@ -15,14 +15,40 @@ This repository contains the Kubernetes configuration files for the hxckr projec
 
 Before running the configuration, ensure you have the following:
 
+> All dependencies will be provided by nix via DevBox
+
 1. A Kubernetes cluster set up and running
 2. `kubectl` installed and configured to communicate with your cluster
 3. Docker images for each component (or mock images for testing)
 4. `make` installed on your system
 
+## Setup DevBox
+
+The DevBox is a development environment that provides all the necessary tools and dependencies for the project. It uses Nix to manage the environment and ensure consistency across different systems.
+
+To set up the DevBox:
+
+```bash
+curl -fsSL https://get.jetify.com/devbox | bash
+```
+
 ## Deployment Instructions
 
 The hxckr application can be deployed in two environments: development and production. Each environment has its own configuration managed through Kustomize overlays.
+
+Before running the deployment commands ensure your devbox environment is setup and running
+
+> Initialising the devbox environment in the repo root folder
+
+```bash
+  devbox shell
+```
+
+> Start minikube within devbox before starting the deployment
+
+```bash
+  minikube start
+```
 
 ### Using the Makefile
 

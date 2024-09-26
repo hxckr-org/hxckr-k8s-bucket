@@ -4,6 +4,7 @@ resources:
   - ../../base
   - postgres.yaml
   - namespace.yaml
+  - ingress.yaml
 namespace: hxckr-dev
 patches:
   - path: server-patch.yaml

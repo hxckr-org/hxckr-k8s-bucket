@@ -54,4 +54,4 @@ spec:
   - name: git
     port: 9418
     targetPort: 9418
-  type: LoadBalancer  # This exposes the service externally
+  type: LoadBalancer

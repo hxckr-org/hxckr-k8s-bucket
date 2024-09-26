@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ../../base
   - namespace.yaml
+  - ingress.yaml
 configMapGenerator:
   - name: rabbitmq-definitions
     files:

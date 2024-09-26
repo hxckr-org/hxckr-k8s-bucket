@@ -154,6 +154,35 @@ The db-secrets and rabbitmq-secret are created manually and persist across deplo
    ```
    Replace <deployment-name> with the name of the deployment using the updated secret (e.g., server, job-queue).
 
+### Ingress Configuration
+
+The application uses an Ingress resource to manage external access to the services in the cluster. The Ingress is configured to route traffic to the server service.
+
+1. Ensure your domain's DNS is configured to point to your cluster's ingress controller's external IP.
+
+2. Update the Ingress configuration in `k8s/overlays/production/ingress.yaml` with your domain:
+
+   ```yaml
+   spec:
+     tls:
+     - hosts:
+       - your-domain.com
+     rules:
+     - host: your-domain.com
+   ```
+
+   Replace `your-domain.com` with your actual domain.
+
+### TLS Certificate Setup
+
+The production environment uses cert-manager to automatically provision and manage TLS certificates. The cert-manager ClusterIssuer is included in the Kubernetes configuration and will be applied automatically when you deploy to production.
+
+1. Ensure your domain's DNS is configured to point to your cluster's ingress controller's external IP.
+
+2. The Ingress resource in the production overlay is already configured to use the ClusterIssuer. When you deploy, cert-manager will automatically request and configure the TLS certificate for your domain.
+
+After making these changes, proceed with the production deployment steps. The Ingress will be created with TLS enabled, and cert-manager will provision a valid certificate for your domain.
+
 ## Cleaning Up
 
 To remove all deployed resources:

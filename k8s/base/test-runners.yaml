@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: javascript-test-runner
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: javascript-test-runner
@@ -34,7 +34,7 @@ kind: Deployment
 metadata:
   name: python-test-runner
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: python-test-runner

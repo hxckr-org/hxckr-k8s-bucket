@@ -4,10 +4,10 @@ resources:
   - ../../base
   - postgres.yaml
   - namespace.yaml
-  - ingress.yaml
 namespace: hxckr-dev
 patches:
   - path: server-patch.yaml
+  - path: server-service-patch.yaml
   - path: softserve-patch.yaml
 configMapGenerator:
   - name: rabbitmq-definitions

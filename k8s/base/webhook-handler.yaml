@@ -20,7 +20,7 @@ spec:
         - containerPort: 3003
         env:
         - name: CORE_SERVICE_URL
-          value: "http://server:3000"
+          value: "http://server:4925"
         - name: PORT
           value: "3003"
 ---

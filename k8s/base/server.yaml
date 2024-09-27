@@ -18,7 +18,7 @@ spec:
         image: extheoisah/hxckr-core:main
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000
+        - containerPort: 4925
         env:
         - name: GIT_SERVICE_URL
           value: "http://git-service:8080"
@@ -36,6 +36,6 @@ spec:
   selector:
     app: server
   ports:
-  - port: 3000
-    targetPort: 3000
-  type: ClusterIP  # This is the default, but we're making it explicit
+  - port: 4925
+    targetPort: 4925
+  type: ClusterIP 

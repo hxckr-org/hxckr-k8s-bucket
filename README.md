@@ -54,7 +54,7 @@ Before running the deployment commands ensure your devbox environment is setup a
 
 We provide a Makefile to simplify common operations. Here are the available commands:
 
-- `make dev-deploy`: Deploy the application in the development environment
+- `make dev-deploy`: Deploy the application in the development environment(takes few seconds to complete)
 - `make dev-verify`: Verify the deployment in the development environment
 - `make dev-softserve`: Get the external IP of the softserve service in development
 - `make dev-clean`: Remove all deployed resources in the development environment
@@ -88,12 +88,15 @@ To deploy the application in the development environment:
 
 4. Wait for all pods to be in the "Running" state.
 
-5. To access the softserve service externally, get its LoadBalancer IP:
-   ```
-   make dev-softserve
-   ```
-
-6. Use the EXTERNAL-IP of the softserve service to access it externally.
+5. To access the server and softserve service externally,
+    ```bash
+     minikube service server -n hxckr-dev
+    ```
+    > and for softserve
+    ```bash
+     minikube service softserve -n hxckr-dev
+    ```
+6. Use the URL of the server and softserve service to access it externally.
 
 ### Production Deployment
 

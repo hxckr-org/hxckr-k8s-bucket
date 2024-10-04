@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: extheoisah/hxckr-core:prod
+        image: extheoisah/hxckr-core:main
         env:
         - name: DATABASE_URL
           valueFrom:

@@ -9,6 +9,7 @@ patches:
   - path: server-patch.yaml
   - path: server-service-patch.yaml
   - path: softserve-patch.yaml
+  - path: job-queue.yaml
 configMapGenerator:
   - name: rabbitmq-definitions
     files:

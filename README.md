@@ -225,3 +225,40 @@ For production:
 ```
 kubectl delete -f . -n hxckr-prod
 ```
+
+### Connecting to RabbitMQ in Local Development
+
+To connect to RabbitMQ from a service running outside the cluster in your local development environment, follow these steps:
+
+1. Ensure the job queue service is running:
+   ```
+   make dev-start-job-queue
+   ```
+
+2. Get the NodePort for the RabbitMQ service:
+   ```
+   kubectl get service job-queue -n hxckr-dev
+   ```
+   Look for the port mapping that looks like `5672:30672/TCP`. In this case, 30672 is the NodePort.
+
+3. Get the IP address of your Minikube cluster:
+   ```
+   minikube ip
+   ```
+
+4. Construct the RabbitMQ connection URL using the following format:
+   ```
+   amqp://dev_user:dev_password@<minikube-ip>:30672
+   ```
+   Replace `<minikube-ip>` with the IP address you got in step 3.
+
+   For example, if the Minikube IP is 192.168.49.2, your connection URL would be:
+   ```
+   amqp://dev_user:dev_password@192.168.49.2:30672
+   ```
+
+5. Use this connection URL in your external service to connect to RabbitMQ.
+
+Note: The username `dev_user` and password `dev_password` are set in the development overlay. If you've changed these values, make sure to use the correct credentials in your connection URL.
+
+Remember that this setup is for local development only. In a production environment, you would use a more secure method to manage and distribute connection details.

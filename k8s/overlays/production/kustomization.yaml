@@ -4,6 +4,7 @@ resources:
   - ../../base
   - namespace.yaml
   - ingress.yaml
+  - job-queue.yaml
 configMapGenerator:
   - name: rabbitmq-definitions
     files:

@@ -40,7 +40,7 @@ dev-start-webhook-handler: dev-create-namespace
 
 dev-start-job-queue: dev-create-namespace
 	$(KUBECTL) create configmap rabbitmq-definitions --from-file=k8s/overlays/development/definitions.json -n $(DEV_NAMESPACE) --dry-run=client -o yaml | $(KUBECTL) apply -f -
-	$(KUBECTL) apply -f k8s/base/job-queue.yaml -n $(DEV_NAMESPACE)
+	$(KUBECTL) apply -k k8s/overlays/development --prune -l app=job-queue
 
 dev-start-test-runners: dev-create-namespace
 	$(KUBECTL) apply -k k8s/overlays/development --prune -l app=test-runners

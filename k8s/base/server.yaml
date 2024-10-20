@@ -14,19 +14,21 @@ spec:
         app: server
     spec:
       containers:
-      - name: server
-        image: extheoisah/hxckr-core:main
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 4925
-        env:
-        - name: GIT_SERVICE_URL
-          value: "http://git-service:8080"
-        - name: RABBITMQ_URL
-          value: "amqp://guest:guest@job-queue:5672"
-        - name: RABBITMQ_QUEUE_NAME
-          value: "backend_core_queue"
-        # Database environment variable is now managed in the overlay patches for production and development
+        - name: server
+          image: extheoisah/hxckr-core:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4925
+          env:
+            - name: GIT_SERVICE_URL
+              value: "http://git-service:8080"
+            - name: RABBITMQ_URL
+              value: "amqp://guest:guest@job-queue:5672"
+            - name: RABBITMQ_QUEUE_NAME
+              value: "backend_core_queue"
+            - name: CONNECTION_URL
+              value: "0.0.0.0:4925"
+          # Database environment variable is now managed in the overlay patches for production and development
 ---
 apiVersion: v1
 kind: Service
@@ -36,6 +38,6 @@ spec:
   selector:
     app: server
   ports:
-  - port: 4925
-    targetPort: 4925
-  type: ClusterIP 
+    - port: 4925
+      targetPort: 4925
+  type: ClusterIP

@@ -4,4 +4,8 @@ kind: Service
 metadata:
   name: server
 spec:
-  type: LoadBalancer
+  type: NodePort
+  ports:
+    - port: 4925
+      targetPort: 4925
+      nodePort: 30025

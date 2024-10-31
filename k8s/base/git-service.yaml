@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,25 +13,54 @@ spec:
         app: git-service
     spec:
       initContainers:
-      - name: wait-for-ssh-key-secret
-        image: bitnami/kubectl:latest
-        command: ['sh', '-c', 'until kubectl get secret ssh-key-secret; do echo "waiting for ssh-key-secret"; sleep 2; done']
+        - name: wait-for-ssh-key-secret
+          image: bitnami/kubectl:latest
+          command:
+            [
+              "sh",
+              "-c",
+              'until kubectl get secret ssh-key-secret; do echo "waiting for ssh-key-secret"; sleep 2; done',
+            ]
       containers:
-      - name: git-service
-        image: extheoisah/hxckr-git-service:main
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8080
-        env:
-        - name: SOFTSERVE_HOST
-          value: "softserve"  # This uses the internal DNS name of the Softserve service
-        - name: SOFTSERVE_PORT
-          value: "3002"
-        - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
-          valueFrom:
-            secretKeyRef:
-              name: ssh-key-secret
-              key: id_rsa
+        - name: git-service
+          image: extheoisah/hxckr-git-service:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SOFTSERVE_HOST
+              value: "softserve" # This uses the internal DNS name of the Softserve service
+            - name: SOFTSERVE_PORT
+              value: "23231"
+            - name: SOFTSERVE_USER
+              value: "admin"
+            - name: SERVER_URL
+              value: "192.168.49.2"
+            - name: SOFTSERVE_HTTP_PORT
+              value: "30032"
+            - name: WEBHOOK_URL
+              value: "http://webhook-handler:3003/webhook"
+            - name: IS_PROD
+              value: "false"
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "8080"
+            - name: SOFTSERVE_KEY_PATH
+              value: "/root/.ssh/id_rsa"
+            - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: ssh-key-secret
+                  key: id_rsa.pub
+          volumeMounts:
+            - name: ssh-key-volume
+              mountPath: /root/.ssh
+              readOnly: true
+      volumes:
+        - name: ssh-key-volume
+          secret:
+            secretName: ssh-key-secret
 ---
 apiVersion: v1
 kind: Service
@@ -42,6 +70,6 @@ spec:
   selector:
     app: git-service
   ports:
-  - port: 8080
-    targetPort: 8080
-  type: ClusterIP  # Internal service, not exposed externally
+    - port: 8080
+      targetPort: 8080
+  type: ClusterIP # Internal service, not exposed externally

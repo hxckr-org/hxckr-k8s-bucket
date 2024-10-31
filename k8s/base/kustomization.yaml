@@ -5,7 +5,6 @@ resources:
   - softserve.yaml
   - webhook-handler.yaml
   - job-queue.yaml
-  - test-runners.yaml
   - git-service.yaml
   - roles.yaml
   - generate-ssh-key-job.yaml

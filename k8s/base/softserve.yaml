@@ -14,25 +14,30 @@ spec:
         app: softserve
     spec:
       initContainers:
-      - name: wait-for-ssh-key-secret
-        image: bitnami/kubectl:latest
-        command: ['sh', '-c', 'until kubectl get secret ssh-key-secret; do echo "waiting for ssh-key-secret"; sleep 2; done']
+        - name: wait-for-ssh-key-secret
+          image: bitnami/kubectl:latest
+          command:
+            [
+              "sh",
+              "-c",
+              'until kubectl get secret ssh-key-secret; do echo "waiting for ssh-key-secret"; sleep 2; done',
+            ]
       containers:
-      - name: softserve
-        image: charmcli/soft-serve:latest
-        ports:
-        - containerPort: 23231
-        - containerPort: 23232
-        - containerPort: 23233
-        - containerPort: 9418
-        env:
-        - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
-          valueFrom:
-            secretKeyRef:
-              name: ssh-key-secret
-              key: id_rsa.pub
-        - name: SOFT_SERVE_DB_DRIVER
-          value: "postgres"
+        - name: softserve
+          image: charmcli/soft-serve:latest
+          ports:
+            - containerPort: 23231
+            - containerPort: 23232
+            - containerPort: 23233
+            - containerPort: 9418
+          env:
+            - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: ssh-key-secret
+                  key: id_rsa.pub
+            - name: SOFT_SERVE_DB_DRIVER
+              value: "postgres"
 ---
 apiVersion: v1
 kind: Service
@@ -42,16 +47,20 @@ spec:
   selector:
     app: softserve
   ports:
-  - name: ssh
-    port: 23231
-    targetPort: 23231
-  - name: http
-    port: 23232
-    targetPort: 23232
-  - name: https
-    port: 23233
-    targetPort: 23233
-  - name: git
-    port: 9418
-    targetPort: 9418
-  type: LoadBalancer
+    - name: ssh
+      port: 23231
+      targetPort: 23231
+      nodePort: 30031
+    - name: http
+      port: 23232
+      targetPort: 23232
+      nodePort: 30032
+    - name: https
+      port: 23233
+      targetPort: 23233
+      nodePort: 30033
+    - name: git
+      port: 9418
+      targetPort: 9418
+      nodePort: 30018
+  type: NodePort

@@ -14,3 +14,6 @@ configMapGenerator:
   - name: rabbitmq-definitions
     files:
       - definitions.json
+  - name: softserve-config
+    files:
+      - config.yaml

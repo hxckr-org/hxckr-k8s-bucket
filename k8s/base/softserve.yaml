@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,6 +37,14 @@ spec:
                   key: id_rsa.pub
             - name: SOFT_SERVE_DB_DRIVER
               value: "postgres"
+          volumeMounts:
+            - mountPath: "/soft-serve/config.yaml"
+              subPath: config.yaml
+              name: config-volume
+      volumes:
+        - name: config-volume
+          configMap:
+            name: softserve-config
 ---
 apiVersion: v1
 kind: Service
@@ -58,9 +65,7 @@ spec:
     - name: https
       port: 23233
       targetPort: 23233
-      nodePort: 30033
     - name: git
       port: 9418
       targetPort: 9418
-      nodePort: 30018
   type: NodePort

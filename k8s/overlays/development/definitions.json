@@ -1,51 +1,58 @@
 {
-    "users": [
-      {
-        "name": "guest",
-        "password_hash": "BMfxN8drrYcIqXZMr+pWTpDT0nMcOagMduLX0bjr4jwud/pN",
-        "hashing_algorithm": "rabbit_password_hashing_sha256",
-        "tags": "administrator"
-      }
-    ],
-    "vhosts": [
-      {
-        "name": "/"
-      }
-    ],
-    "permissions": [
-      {
-        "user": "guest",
-        "vhost": "/",
-        "configure": ".*",
-        "write": ".*",
-        "read": ".*"
-      }
-    ],
-    "exchanges": [
-      {
-        "name": "my_exchange",
-        "vhost": "/",
-        "type": "topic",
-        "durable": true,
-        "auto_delete": false,
-        "internal": false,
-        "arguments": {}
-      }
-    ],
-    "queues": [
-      {
-        "name": "backend_core_queue",
-        "vhost": "/",
-        "durable": true,
-        "auto_delete": false,
-        "arguments": {}
-      },
-      {
-        "name": "test_runner_queue",
-        "vhost": "/",
-        "durable": true,
-        "auto_delete": false,
-        "arguments": {}
-      }
-    ]
-  }
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "BMfxN8drrYcIqXZMr+pWTpDT0nMcOagMduLX0bjr4jwud/pN",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "my_exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "backend_core_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "test_runner_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "test_results_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ]
+}
